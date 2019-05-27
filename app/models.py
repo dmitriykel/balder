@@ -1,10 +1,9 @@
-from app import db, authorize
+from app import db
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
 
 
-class AuthorizationCodes(UserMixin, db.Model):
+class AuthorizationCodes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     secret_hash = db.Column(db.String(128))
 
@@ -24,9 +23,4 @@ class Surprises(db.Model):
     released = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
     def __repr__(self):
-        return '<Surprises {}>'.format(self.body)
-
-
-@authorize.user_loader
-def load_user(id):
-    return AuthorizationCodes.query.get(int(id))
+        return '<Surprise id {}>'.format(self.id)
