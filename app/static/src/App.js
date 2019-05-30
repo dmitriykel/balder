@@ -1,41 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Routes from "./Routes";
 
-const axios = require('axios');
+export default class App extends React.Component {
+    constructor(props) {
+        super(props);
 
-axios.get("http://127.0.0.1:3000/balder/api/v1.0/gifts", {
-  headers: {
-    'Content-Type': 'application/json',
-    "Access-Control-Allow-Origin": "*"
-  }
-})
-  .then(function(response) {
-    console.log(response);
-  })
-  .catch(function(error) {
-    console.log(error);
-  });
+        this.state = {
+            isAuthorized: ""
+        };
+    }
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Eit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    userHasAuthorized(authorized) {
+      this.setState({ isAuthorized: authorized });
+    }
+
+    render() {
+        const childProps = {
+          isAuthenticated: this.state.isAuthorized,
+          userHasAuthorized: this.userHasAuthorized
+        };
+
+        return (
+            <div className="App">
+                <Routes childProps={childProps} />
+            </div>
+        );
+    }
 }
-
-export default App;
