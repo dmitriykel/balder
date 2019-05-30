@@ -7,8 +7,10 @@ export default class App extends React.Component {
         super(props);
 
         this.state = {
-            isAuthorized: ""
+            isAuthorized: false
         };
+
+        this.userHasAuthorized = this.userHasAuthorized.bind(this)
     }
 
     userHasAuthorized(authorized) {

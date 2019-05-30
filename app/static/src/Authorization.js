@@ -34,10 +34,12 @@ export default class Authorization extends React.Component {
             response => {
                 console.log(response.data['success'])
                 this.props.userHasAuthorized(true);
-            })
+                this.props.history.push("/");
+            }
+        )
         .catch(
             error => {
-                console.log(error.response.data['error'])
+                console.log(error)
             });
     }
 
