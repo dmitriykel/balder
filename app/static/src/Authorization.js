@@ -44,7 +44,7 @@ export default class Authorization extends React.Component {
     }
 
     render() {
-        console.log(this.props)
+        if(this.props.isAuthorized) this.props.history.push("/");
         return (
             <header className="App-header">
                 <div className="Authorizarion">

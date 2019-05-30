@@ -15,14 +15,19 @@ export default class App extends React.Component {
 
     userHasAuthorized(authorized) {
       this.setState({ isAuthorized: authorized });
+      localStorage.setItem('isAuthorized', authorized)
+    }
+
+    componentDidMount() {
+        const authorized = localStorage.getItem('isAuthorized');
+        this.setState({ isAuthorized: authorized });
     }
 
     render() {
         const childProps = {
-          isAuthenticated: this.state.isAuthorized,
+          isAuthorized: this.state.isAuthorized,
           userHasAuthorized: this.userHasAuthorized
         };
-
         return (
             <div className="App">
                 <Routes childProps={childProps} />
