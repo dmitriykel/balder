@@ -4,6 +4,7 @@ import "./Home.css";
 
 export default class Home extends Component {
   render() {
+      if(!this.props.isAuthorized) this.props.history.push("/auth");
     return (
       <div className="Home">
         <div className="lander">
