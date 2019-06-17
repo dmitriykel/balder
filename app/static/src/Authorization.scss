@@ -1,0 +1,131 @@
+img {
+  vertical-align: middle;
+  max-width: 100%;
+}
+button {
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+}
+
+.auth_container {
+  position: absolute;
+  width: 24em;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  animation: intro .7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+
+  .profile {
+    position: relative;
+  }
+
+  .open {
+    .profile_form {
+      visibility: visible;
+      height: auto;
+      opacity: 1;
+      transform: translateY(-6em);
+      padding-top: 12em;
+      .profile_fields {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+    .profile_avatar {
+      transform: translate(-50%, -5.5em);
+    }
+  }
+
+  .profile_form {
+    position: relative;
+    background: white;
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+    padding: 3em;
+    border-radius: .25em;
+    -webkit-filter: drop-shadow(0 0 2em rgba(0,0,0,0.2));
+    transition:
+      opacity .4s ease-in-out,
+      height .4s ease-in-out,
+      transform .4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+      padding .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    .profile_fields {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .profile_footer {
+      padding-top: 1em;
+      text-align: center;
+    }
+    .field {
+      position: relative;
+      margin-bottom: 2em;
+    }
+    .label {
+      position: absolute;
+      height: 2rem;
+      line-height: 2rem;
+      bottom: 0;
+      color: #999;
+      transition: all .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    input[type='text'] {
+      width: 100%;
+      font-size: 100%;
+      border: 0;
+      padding: 0;
+      background-color: transparent;
+      height: 2rem;
+      line-height: 2rem;
+      border-bottom: 1px solid #eee;
+      color: #777;
+      transition: all .2s ease-in;
+    }
+    input[type='text']:focus {
+      outline: 0;
+      border-color: #ccc;
+    }
+    input[type='submit']{
+      display: none;
+    }
+    input[type='text']:focus + .label,
+    input[type='text']:valid + .label {
+      transform: translateY(-100%);
+      font-size: 0.75rem;
+      color: #ccc;
+    }
+  }
+
+  .profile_avatar {
+      position: absolute;
+      z-index: 1;
+      left: 50%;
+      transform: translateX(-50%);
+      overflow: hidden;
+      width: 10em;
+      height: 10em;
+      display: block;
+      transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      will-change: transform;
+    }
+  .profile_avatar:focus {
+    outline: 0;
+  }
+
+}
+
+@keyframes intro {
+  from {
+    opacity: 0;
+    top: 0;
+  }
+  to {
+    opacity: 1;
+    top: 50%;
+  }
+}
