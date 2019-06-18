@@ -1,16 +1,21 @@
 from flask import request, jsonify, make_response, abort
-from app import app
+from app import app, db
 from app.models import AuthorizationCodes, Gifts
 
 
 @app.errorhandler(403)
-def not_found():
+def forbidden():
     return make_response(jsonify({'error': 'Invalid or no secret word.'}), 403)
 
 
 @app.errorhandler(404)
 def not_found():
     return make_response(jsonify({'error': 'Not found.'}), 404)
+
+
+@app.errorhandler(406)
+def not_acceptable():
+    return make_response(jsonify({'error': 'Incorrect data format'}), 406)
 
 
 @app.route('/balder/api/v1.0/gifts', methods=['GET'])
@@ -39,6 +44,17 @@ def get_gift(gift_id):
             "data": gift.data
         }
         return jsonify({"gift": gift_obj})
+
+
+@app.route('/balder/api/v1.0/gift/add/', methods=['POST'])
+def create_gift():
+    if not request.json or 'type' not in request.json or 'data' not in request.json:
+        abort(406)
+
+    gift = Gifts(type=request.json['type'], data=request.json['data'])
+    db.session.add(gift)
+    db.session.commit()
+    return make_response(jsonify({'success': f'Gift {gift.id} with type {gift.type} has added'}), 200)
 
 
 @app.route('/balder/api/v1.0/check_secret', methods=['POST'])
