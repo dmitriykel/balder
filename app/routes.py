@@ -54,7 +54,7 @@ def create_gift():
     gift = Gifts(type=request.json['type'], data=request.json['data'])
     db.session.add(gift)
     db.session.commit()
-    return make_response(jsonify({'success': f'Gift {gift.id} with type {gift.type} has added'}), 200)
+    return make_response(jsonify({'success': f'Gift {gift.id} with type {gift.type} was added'}), 200)
 
 
 @app.route('/balder/api/v1.0/check_secret', methods=['POST'])
