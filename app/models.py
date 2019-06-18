@@ -1,5 +1,4 @@
 from app import db
-from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -14,13 +13,13 @@ class AuthorizationCodes(db.Model):
         return check_password_hash(self.secret_hash, secret)
 
     def __repr__(self):
-        return '<Authorization id {}>'.format(self.id)
+        return f'<Authorization ({self.id} {self.secret_hash})>'
 
 
-class Surprises(db.Model):
+class Gifts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(140))
-    released = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    type = db.Column(db.String(16))
+    data = db.Column(db.String(256))
 
     def __repr__(self):
-        return '<Surprise id {}>'.format(self.id)
+        return f'<Gift ({self.id} {self.type} {self.data})>'
