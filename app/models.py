@@ -20,6 +20,8 @@ class Gifts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(16))
     data = db.Column(db.String(256))
+    img_url = db.Column(db.String(128))
+    open_date = db.Column(db.DateTime, index=True)
 
     def __repr__(self):
         return f'<Gift ({self.id} {self.type} {self.data})>'

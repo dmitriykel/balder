@@ -9,9 +9,10 @@ Digital happiness deliver.
 TODO: Dockerize it!
 
 ## REST API
-| HTTP Method   | URI                                                            | Description       |
-| ------------- |:--------------------------------------------------------------:| -----------------:|
-| GET           | http://[hostname]/balder/api/v1.0/gifts                        | Get gifts list    |
-| GET           | http://[hostname]/balder/api/v1.0/gift/[gift_id]               | Get gift by id    |
-| POST          | http://[hostname]/balder/api/v1.0/gift/add                     | Add new gift      |
-| POST          | http://[hostname]/balder/api/v1.0/check_secret                 | Check secret word |
+| HTTP Method   | URI                                                            | Description        |
+| ------------- |:--------------------------------------------------------------:| ------------------:|
+| GET           | http://[hostname]/balder/api/v1.0/gifts                        | Get gifts list     |
+| GET           | http://[hostname]/balder/api/v1.0/gift/[gift_id]               | Get gift by id     |
+| POST          | http://[hostname]/balder/api/v1.0/gift/add                     | Add new gift       |
+| PUT           | http://[hostname]/balder/api/v1.0/gift/[gift_id]/open          | Set gift open_date |
+| POST          | http://[hostname]/balder/api/v1.0/check_secret                 | Check secret word  |

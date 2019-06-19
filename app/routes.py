@@ -1,6 +1,8 @@
 from flask import request, jsonify, make_response, abort
 from app import app, db
 from app.models import AuthorizationCodes, Gifts
+from datetime import datetime
+from flask_cors import cross_origin
 
 
 @app.errorhandler(403)
@@ -26,7 +28,9 @@ def get_gifts():
         gift_obj = {
             "id": gift.id,
             "type": gift.type,
-            "data": gift.data
+            "data": gift.data,
+            "img_url": gift.img_url,
+            "open_date": gift.open_date
         }
         gifts_json.append(gift_obj)
     return jsonify({"gifts": gifts_json})
@@ -55,6 +59,18 @@ def create_gift():
     db.session.add(gift)
     db.session.commit()
     return make_response(jsonify({'success': f'Gift {gift.id} with type {gift.type} was added'}), 200)
+
+
+@app.route('/balder/api/v1.0/gift/<int:gift_id>/open', methods=['PUT'])
+@cross_origin()
+def open_gift(gift_id):
+    if not request.json or not gift_id or 'open_date' not in request.json:
+        abort(406)
+
+    open_date = datetime.fromtimestamp(request.json['open_date'])
+    Gifts.query.filter_by(id=gift_id).update({'open_date': open_date})
+    db.session.commit()
+    return make_response(jsonify({'success': f'Gift {gift_id} opened at {open_date}'}), 200)
 
 
 @app.route('/balder/api/v1.0/check_secret', methods=['POST'])

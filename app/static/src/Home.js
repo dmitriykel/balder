@@ -21,7 +21,11 @@ export default class Home extends Component {
                     <li key={index} className="list_item">
                         <div className="container">
                             <div className="img">
-                                <img data-gift-id={giftsData[index]['id']} src="../images/gift.svg" alt="gift"/>
+                                <img
+                                    data-gift-id={giftsData[index]['id']}
+                                    src={giftsData[index]['open_date'] ? "../images/open_gift.svg" : "../images/gift.svg"}
+                                    alt="gift"
+                                />
                             </div>
                         </div>
                     </li>
@@ -38,7 +42,10 @@ export default class Home extends Component {
             return (
                 Object.keys(giftsData).map(
                 index =>
-                    <div data-gift-id={giftsData[index]['id']} className="gift_content hidden">{giftsData[index]['data']}</div>
+                    <div data-gift-id={giftsData[index]['id']} className="gift_content hidden">
+                        <img src={giftsData[index]['img_url']}/>
+                        <p>{giftsData[index]['data']}</p>
+                    </div>
                 )
             );
         }
@@ -54,6 +61,7 @@ export default class Home extends Component {
         .then(
             response => {
                 this.setState({gifts: response.data['gifts']});
+                console.log(response.data['gifts'])
             }
         )
         .catch(
@@ -61,6 +69,29 @@ export default class Home extends Component {
                 console.log(error)
             }
         );
+
+        function setOpenDate(gift_id, date_json) {
+            axios.put(
+            "http://127.0.0.1:3000/balder/api/v1.0/" + gift_id + "/open",
+            JSON.stringify(date_json),
+            {
+                headers: {
+                    'Access-Control-Allow-Origin': 'http://localhost:3000',
+                    'Content-Type': 'application/json'
+                }
+            }
+            )
+            .then(
+                response => {
+                    console.log(response);
+                }
+            )
+            .catch(
+                error => {
+                    console.log(error);
+                });
+        }
+
 
         // TODO: GTFO JQUERY
         let hover_active = false;
@@ -92,39 +123,39 @@ export default class Home extends Component {
           $('.list_item').on('click', function() {
 
             if (hover_active) {
-              hover_active = false;
-              $(this).removeClass('hover');
+                hover_active = false;
+                let document_height = $(document).height();
+                var gift_id = $(this).find('img').data('gift-id');
+                selected_card_w = $(this).width();
+                selected_card_h = $(this).height();
+                motion_parts_offset = $(this).offset();
 
-              selected_card_w = $(this).width();
-              selected_card_h = $(this).height();
-              motion_parts_offset = $(this).offset();
+                setOpenDate(gift_id, {'open_date': Date.now()});
+                $(this).removeClass('hover');
 
-              let document_height = $(document).height();
-              var gift_id = $(this).find('img').data('gift-id');
-
-              $('.motion').width(selected_card_w).height(selected_card_h).css({
+                $('.motion').width(selected_card_w).height(selected_card_h).css({
                 top: motion_parts_offset.top,
                 left: motion_parts_offset.left
-              });
+                });
 
-              $('.motion').css('opacity', 1);
-              $('.motion').width('100%').height(document_height).css({
+                $('.motion').css('opacity', 1);
+                $('.motion').width('100%').height(document_height).css({
                 top: 0,
                 left: 0,
                 zIndex: 5,
                 opacity: 1,
                 visibility: 'visible'
-              });
-              console.log(gift_id);
+                });
+                console.log(gift_id);
 
-              setTimeout(function() {
+                setTimeout(function() {
                 $('.motion').css('position','fixed');
                 $('.loading-anime').show();
                 $('.gift_container').fadeIn(1000);
                 $(`.gift_content[data-gift-id='${gift_id}']`).removeClass('hidden');
                 $('.loading-anime').hide();
-              }, 500);
-            }
+                }, 500);
+                }
           });
 
           $('.btn_close').on('click', closePage);

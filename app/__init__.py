@@ -6,7 +6,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 app.config.from_object(Config)
-CORS(app)
+CORS(app, support_credentials=True)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
