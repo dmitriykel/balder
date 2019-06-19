@@ -36,7 +36,6 @@ export default class Authorization extends React.Component {
         )
         .then(
             response => {
-                console.log(response.data['success']);
                 this.props.userHasAuthorized(true);
                 this.setState({error: ''});
                 this.props.history.push("/");
@@ -49,7 +48,7 @@ export default class Authorization extends React.Component {
     }
 
     componentDidMount() {
-        if(this.props.isAuthorized) this.props.history.push("/");
+        if(localStorage.getItem('isAuthorized')) this.props.history.push("/");
     }
 
     render() {
