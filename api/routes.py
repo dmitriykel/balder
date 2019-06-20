@@ -1,6 +1,6 @@
 from flask import request, jsonify, make_response, abort
-from app import app, db
-from app.models import AuthorizationCodes, Gifts
+from api import app, db
+from api.models import AuthorizationCodes, Gifts
 from datetime import datetime
 from flask_cors import cross_origin
 
@@ -20,7 +20,7 @@ def not_acceptable():
     return make_response(jsonify({'error': 'Incorrect data format'}), 406)
 
 
-@app.route('/balder/api/v1.0/gifts', methods=['GET'])
+@app.route('/api/v1.0/gifts', methods=['GET'])
 def get_gifts():
     gifts_json = []
     gifts_list = Gifts.query.all()
@@ -36,7 +36,7 @@ def get_gifts():
     return jsonify({"gifts": gifts_json})
 
 
-@app.route('/balder/api/v1.0/gift/<int:gift_id>', methods=['GET'])
+@app.route('/api/v1.0/gift/<int:gift_id>', methods=['GET'])
 def get_gift(gift_id):
     gift = Gifts.query.get(gift_id)
     if gift is None:
@@ -50,7 +50,7 @@ def get_gift(gift_id):
         return jsonify({"gift": gift_obj})
 
 
-@app.route('/balder/api/v1.0/gift/add/', methods=['POST'])
+@app.route('/api/v1.0/gift/add/', methods=['POST'])
 def create_gift():
     if not request.json or 'type' not in request.json or 'data' not in request.json:
         abort(406)
@@ -61,7 +61,7 @@ def create_gift():
     return make_response(jsonify({'success': f'Gift {gift.id} with type {gift.type} was added'}), 200)
 
 
-@app.route('/balder/api/v1.0/gift/<int:gift_id>/open', methods=['PUT'])
+@app.route('/api/api/v1.0/gift/<int:gift_id>/open', methods=['PUT'])
 @cross_origin()
 def open_gift(gift_id):
     if not request.json or not gift_id or 'open_date' not in request.json:
@@ -73,7 +73,7 @@ def open_gift(gift_id):
     return make_response(jsonify({'success': f'Gift {gift_id} opened at {open_date}'}), 200)
 
 
-@app.route('/balder/api/v1.0/check_secret', methods=['POST'])
+@app.route('/api/v1.0/check_secret', methods=['POST'])
 def check_secret():
     secret_hash = AuthorizationCodes.query.get(1)
 

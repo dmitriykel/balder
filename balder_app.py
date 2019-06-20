@@ -1,5 +1,5 @@
-from app import app, db
-from app.models import AuthorizationCodes, Gifts
+from api import app, db
+from api.models import AuthorizationCodes, Gifts
 
 
 @app.shell_context_processor

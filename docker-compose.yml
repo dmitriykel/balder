@@ -1,12 +1,18 @@
 version: '3'
 services:
   frontend:
-    image: balder-frontend:latest
-    container_name: "balder-frontend"
+    build: app/
     ports:
-      - "8080:8080"
+      - "80:80"
+    depends_on:
+      - api
   api:
-    image: balder-api:latest
-    container_name: "balder_api"
-    ports:
-      - "3000:5000"
+    build: .
+    expose:
+      - "5000"
+    command: gunicorn -b :5000 --access-logfile - --error-logfile - api:app && flask db migrate
+    volumes:
+      - db_data:/data
+
+volumes:
+  db_data:
