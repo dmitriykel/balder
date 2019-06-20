@@ -1,4 +1,12 @@
-version: '2'
+version: '3'
 services:
   frontend:
+    image: balder-frontend:latest
+    container_name: "balder-frontend"
+    ports:
+      - "8080:8080"
   api:
+    image: balder-api:latest
+    container_name: "balder_api"
+    ports:
+      - "3000:5000"

@@ -1,0 +1,7 @@
+venv
+app.db
+docker-compose.yml
+Dockerfile
+README.md
+.gitignore
+app/static

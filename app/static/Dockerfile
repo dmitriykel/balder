@@ -1,15 +1,17 @@
-FROM node:12.4.0-alpine
+FROM node:10-stretch-slim
+
+RUN apt-get update && apt-get -y install nginx
 
 WORKDIR /app
 
+COPY . /app
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 ENV PATH /app/node_modules/.bin:$PATH
 
-COPY package*.json ./
-COPY src /app/src
-COPY public /app/public
-
 RUN npm install
+RUN npm run build
 
 EXPOSE 8080
 
-CMD ["npm", "start"]
+CMD ["nginx", "-g", "daemon off;"]
