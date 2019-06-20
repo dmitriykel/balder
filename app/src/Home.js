@@ -57,7 +57,7 @@ export default class Home extends Component {
     componentDidMount() {
         if(!localStorage.getItem('isAuthorized')) this.props.history.push("/auth");
 
-        axios.get("http://127.0.0.1:5000/api/v1.0/gifts")
+        axios.get("/api/v1.0/gifts")
         .then(
             response => {
                 this.setState({gifts: response.data['gifts']});
@@ -72,7 +72,7 @@ export default class Home extends Component {
 
         function setOpenDate(gift_id, date_json) {
             axios.put(
-            "http://127.0.0.1:5000/balder/api/v1.0/" + gift_id + "/open",
+            "/api/v1.0/" + gift_id + "/open",
             JSON.stringify(date_json),
             {
                 headers: {

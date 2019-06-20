@@ -3,16 +3,18 @@ services:
   frontend:
     build: app/
     ports:
-      - "80:80"
+      - "8010:80"
     depends_on:
       - api
   api:
     build: .
     expose:
       - "5000"
-    command: gunicorn -b :5000 --access-logfile - --error-logfile - api:app && flask db migrate
+    environment:
+      DATABASE_URL: sqlite:////data/db_data.db
+    command: sh -c "flask db upgrade && gunicorn -b :5000 --access-logfile - --error-logfile - api:app"
     volumes:
-      - db_data:/data
+      - data:/data
 
 volumes:
-  db_data:
+  data:

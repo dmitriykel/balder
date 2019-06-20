@@ -12,6 +12,6 @@ ENV PATH /app/node_modules/.bin:$PATH
 RUN npm install
 RUN npm run build
 
-EXPOSE 8080
+EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
