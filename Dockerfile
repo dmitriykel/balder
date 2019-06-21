@@ -2,7 +2,10 @@ FROM python:3.7-alpine
 
 WORKDIR /api
 
-COPY . /api
+COPY requirements.txt /api
 
 RUN pip install -r requirements.txt && pip install gunicorn
-ENV FLASK_APP balder:app
+
+COPY . /api
+
+ENV FLASK_APP balder_app:app
