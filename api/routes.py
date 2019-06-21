@@ -61,7 +61,7 @@ def create_gift():
     return make_response(jsonify({'success': f'Gift {gift.id} with type {gift.type} was added'}), 200)
 
 
-@app.route('/api/api/v1.0/gift/<int:gift_id>/open', methods=['PUT'])
+@app.route('/api/v1.0/gift/<int:gift_id>/open', methods=['PUT'])
 @cross_origin()
 def open_gift(gift_id):
     if not request.json or not gift_id or 'open_date' not in request.json:

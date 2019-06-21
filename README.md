@@ -6,7 +6,14 @@ Digital happiness deliver.
 3. Make your friend happier.
 
 ## Build app
-TODO: Dockerize it!
+### Production build
+In root directory
+
+`docker-compose up -d`
+
+To generate new secret-code (with running app)
+
+`docker-compose run api flask make-secret`
 
 ## REST API
 | HTTP Method   | URI                                                            | Description        |
@@ -16,3 +23,6 @@ TODO: Dockerize it!
 | POST          | http://[hostname]/balder/api/v1.0/gift/add                     | Add new gift       |
 | PUT           | http://[hostname]/balder/api/v1.0/gift/[gift_id]/open          | Set gift open_date |
 | POST          | http://[hostname]/balder/api/v1.0/check_secret                 | Check secret word  |
+
+## License
+MIT
