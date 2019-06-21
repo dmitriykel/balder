@@ -28,7 +28,7 @@ export default class Authorization extends React.Component {
         const secret_json = { 'secret': this.state.secret };
 
         axios.post(
-            "http://127.0.0.1:3000/balder/api/v1.0/check_secret",
+            "/api/v1.0/check_secret",
             JSON.stringify(secret_json),
             {
                 headers: {'Content-Type': 'application/json'}
