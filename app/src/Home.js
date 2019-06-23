@@ -55,35 +55,56 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
-        if(!localStorage.getItem('isAuthorized')) this.props.history.push("/auth");
+        if(localStorage.getItem('isAuthorized') === 'false')
+        {
+            this.props.history.push("/auth");
+        }
+        else
+        {
+            axios.get(
+                "/api/v1.0/gifts",
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': localStorage.getItem('authorizationToken')
+                    }
+                }
+            )
+            .then(
+                response => {
+                    this.setState({gifts: response.data['gifts']});
+                }
+            )
+            .catch(
+                error => {
+                    if(error.response.status === 423)
+                    {
+                        this.props.userHasAuthorized(false);
+                        this.props.history.push("/auth");
+                    }
+                    else
+                    {
+                        console.log(error)
+                    }
+                }
+            );
+        }
 
-        axios.get("/api/v1.0/gifts")
-        .then(
-            response => {
-                this.setState({gifts: response.data['gifts']});
-                console.log(response.data['gifts'])
-            }
-        )
-        .catch(
-            error => {
-                console.log(error)
-            }
-        );
 
         function setOpenDate(gift_id, date_json) {
             axios.put(
-            "/api/v1.0/" + gift_id + "/open",
+            "http://localhost:5000/api/v1.0/" + gift_id + "/open",
             JSON.stringify(date_json),
             {
                 headers: {
-                    'Access-Control-Allow-Origin': 'http://localhost:5000',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('authorizationToken')
                 }
             }
             )
             .then(
                 response => {
-                    console.log(response);
+                    console.log(response.data);
                 }
             )
             .catch(

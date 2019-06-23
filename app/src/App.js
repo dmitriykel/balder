@@ -15,7 +15,7 @@ export default class App extends React.Component {
 
     userHasAuthorized(authorized) {
       this.setState({ isAuthorized: authorized });
-      localStorage.setItem('isAuthorized', authorized)
+      localStorage.setItem('isAuthorized', authorized);
     }
 
     componentDidMount() {

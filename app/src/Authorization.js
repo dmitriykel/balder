@@ -38,17 +38,19 @@ export default class Authorization extends React.Component {
             response => {
                 this.props.userHasAuthorized(true);
                 this.setState({error: ''});
+                localStorage.setItem('authorizationToken', response.data['token']);
                 this.props.history.push("/");
+                window.location.reload();
             }
         )
         .catch(
             error => {
-                this.setState({error: 'Incorrect secret word!'});
+                this.setState({error: error.response.data['error']});
             });
     }
 
     componentDidMount() {
-        if(localStorage.getItem('isAuthorized')) this.props.history.push("/");
+        if(localStorage.getItem('isAuthorized') === 'true') this.props.history.push("/");
     }
 
     render() {
