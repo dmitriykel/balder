@@ -9,7 +9,7 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 ENV PATH /app/node_modules/.bin:$PATH
 
-RUN npm install
+RUN npm install --unsafe-perm
 RUN npm run build
 
 EXPOSE 80
