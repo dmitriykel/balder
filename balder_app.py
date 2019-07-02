@@ -1,4 +1,5 @@
 from api import app, db
+import click
 from api.models import AuthorizationCodes, Gifts
 
 
@@ -8,15 +9,17 @@ def make_shell_context():
 
 
 @app.cli.command()
-def make_secret():
-    import random
-    import string
-    secret = ''.join(random.sample(string.ascii_letters, 6))
+@click.argument('secret_word')
+def make_secret(secret_word):
+    if not secret_word:
+        import random
+        import string
+        secret_word = ''.join(random.sample(string.ascii_letters, 6))
 
     m = AuthorizationCodes()
-    m.set_secret(secret)
+    m.set_secret(secret_word)
 
     db.session.add(m)
     db.session.commit()
 
-    print(f'Your secret code: {secret}')
+    print(f'Your secret code: {secret_word}')

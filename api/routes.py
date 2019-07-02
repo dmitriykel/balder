@@ -34,7 +34,7 @@ def locked(error):
 
 @app.errorhandler(500)
 def server_error(error):
-    return make_response(jsonify({'error': "Problems on server"}), 423)
+    return make_response(jsonify({'error': "Problems on server"}), 500)
 
 
 @app.route('/api/v1.0/gifts', methods=['GET'])
@@ -77,10 +77,13 @@ def get_gift(gift_id):
 def create_gift():
     if request.headers is not None and 'Authorization' in request.headers:
         if check_authorization(request.headers['Authorization']):
-            if not request.json or 'type' not in request.json or 'data' not in request.json:
+            if not request.json \
+                    or 'type' not in request.json \
+                    or 'data' not in request.json \
+                    or 'img_url' not in request.json:
                 abort(406)
 
-            gift = Gifts(type=request.json['type'], data=request.json['data'])
+            gift = Gifts(type=request.json['type'], data=request.json['data'], img_url=request.json['img_url'])
             db.session.add(gift)
             db.session.commit()
             return make_response(jsonify({'success': f'Gift {gift.id} with type {gift.type} was added'}), 200)
@@ -109,7 +112,7 @@ def check_secret():
     if not request.json or 'secret' not in request.json:
         abort(403)
 
-    if not secret.check_secret(request.json['secret']):
+    if secret is None or not secret.check_secret(request.json['secret']):
         abort(403)
 
     secret.set_token(request.json['secret'])

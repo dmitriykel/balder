@@ -2,8 +2,7 @@ FROM node:12-stretch-slim as builder
 
 WORKDIR /app
 
-COPY package.json /app
-COPY package-lock.json /app
+COPY . /app
 
 RUN npm install
 
