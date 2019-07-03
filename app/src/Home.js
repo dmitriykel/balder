@@ -13,35 +13,35 @@ export default class Home extends Component {
         this.clickHandlerClose = this.clickHandlerClose.bind(this);
     }
 
-    setOpenDate(gift_id, date_json) {
-        axios.put(
-        "/api/v1.0/" + gift_id + "/open",
-        JSON.stringify(date_json),
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('authorizationToken')
-            }
-        }
-        )
-        .then(
-            response => {
-                console.log(response.data);
-            }
-        )
-        .catch(
-            error => {
-                console.log(error);
-            });
-    }
-
     clickHandlerGift(gift_id) {
         function fadeIn(target) {
             target.classList.add('show');
             target.classList.remove('hide')
         }
 
-        this.setOpenDate(gift_id, {'open_date': Date.now()});
+        function setOpenDate(gift_id, date_json) {
+            axios.put(
+            "/api/v1.0/" + gift_id + "/open",
+            JSON.stringify(date_json),
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('authorizationToken')
+                }
+            }
+            )
+            .then(
+                response => {
+                    console.log(response.data);
+                }
+            )
+            .catch(
+                error => {
+                    console.log(error);
+                });
+        }
+
+        setOpenDate(gift_id, {'open_date': Date.now()});
         setTimeout(function ()
         {
             fadeIn(document.getElementById('gift_container'));
