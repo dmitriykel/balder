@@ -21,7 +21,7 @@ export default class Home extends Component {
 
         function setOpenDate(gift_id, date_json) {
             axios.put(
-            "/api/v1.0/" + gift_id + "/open",
+            "/api/v1.0/gift/" + gift_id + "/open",
             JSON.stringify(date_json),
             {
                 headers: {
