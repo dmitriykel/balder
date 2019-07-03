@@ -3,7 +3,7 @@ services:
   frontend:
     build: app/
     ports:
-      - "8010:80"
+      - "80:80"
     depends_on:
       - api
   api:
