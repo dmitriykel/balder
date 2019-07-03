@@ -112,7 +112,7 @@ def check_secret():
     if not request.json or 'secret' not in request.json:
         abort(403)
 
-    if secret is None or not secret.check_secret(request.json['secret']):
+    if secret is None or not secret.check_secret(request.json['secret'].lower()):
         abort(403)
 
     secret.set_token(request.json['secret'])

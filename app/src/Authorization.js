@@ -2,7 +2,6 @@ import React from 'react';
 import './App.scss'
 import './Authorization.scss'
 import logo from "./logo.svg";
-import $ from "jquery";
 
 const axios = require('axios');
 
@@ -49,8 +48,13 @@ export default class Authorization extends React.Component {
             });
     }
 
-    componentDidMount() {
+    componentDidMount()
+    {
         if(localStorage.getItem('isAuthorized') === 'true') this.props.history.push("/");
+        document.getElementById('toggleProfile').addEventListener(
+            'click',
+            () => document.getElementsByClassName('profile')[0].classList.toggle('open')
+        );
     }
 
     render() {
@@ -82,9 +86,3 @@ export default class Authorization extends React.Component {
         );
     }
 }
-
-$(function () {
-   $('#toggleProfile').on('click', function () {
-     $('div.profile').toggleClass('open');
-   })
-});

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./Home.scss";
-import $ from "jquery";
 
 const axios = require('axios');
 
@@ -13,8 +12,39 @@ export default class Home extends Component {
         };
     }
 
+    getGifts() {
+        axios.get(
+                "/api/v1.0/gifts",
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': localStorage.getItem('authorizationToken')
+                    }
+                }
+            )
+            .then(
+                response => {
+                    this.setState({gifts: response.data['gifts']});
+                }
+            )
+            .catch(
+                error => {
+                    if(error.response.status === 423)
+                    {
+                        this.props.userHasAuthorized(false);
+                        this.props.history.push("/auth");
+                    }
+                    else
+                    {
+                        console.log(error)
+                    }
+                }
+            );
+    }
+
     createGiftsList(giftsData) {
         try {
+            this.getGifts();
             return (
                 Object.keys(giftsData).map(
                 index =>
@@ -55,171 +85,88 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
-        if(localStorage.getItem('isAuthorized') === 'false')
-        {
-            this.props.history.push("/auth");
-        }
-        else
-        {
-            axios.get(
-                "/api/v1.0/gifts",
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': localStorage.getItem('authorizationToken')
-                    }
-                }
-            )
-            .then(
-                response => {
-                    this.setState({gifts: response.data['gifts']});
-                }
-            )
-            .catch(
-                error => {
-                    if(error.response.status === 423)
-                    {
-                        this.props.userHasAuthorized(false);
-                        this.props.history.push("/auth");
-                    }
-                    else
-                    {
-                        console.log(error)
-                    }
-                }
-            );
+        if(localStorage.getItem('isAuthorized') === 'false') this.props.history.push("/auth");
+
+        // function setOpenDate(gift_id, date_json) {
+        //     axios.put(
+        //     "/api/v1.0/" + gift_id + "/open",
+        //     JSON.stringify(date_json),
+        //     {
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'Authorization': localStorage.getItem('authorizationToken')
+        //         }
+        //     }
+        //     )
+        //     .then(
+        //         response => {
+        //             console.log(response.data);
+        //         }
+        //     )
+        //     .catch(
+        //         error => {
+        //             console.log(error);
+        //         });
+        // }
+
+        function fadeIn(target) {
+            target.classList.add('show');
+            target.classList.remove('hide')
         }
 
+        function fadeOut(target) {
+            target.classList.add('hide');
+            target.classList.remove('show')
+        }
 
-        function setOpenDate(gift_id, date_json) {
-            axios.put(
-            "http://localhost:5000/api/v1.0/" + gift_id + "/open",
-            JSON.stringify(date_json),
+        let gifts_elements = document.getElementsByClassName('list_item');
+        Array.from(gifts_elements).forEach(
+            element =>
             {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': localStorage.getItem('authorizationToken')
-                }
+                element.addEventListener(
+                    'click',
+                    () =>
+                    {
+                        console.log(1);
+                        let gift_id = element.getElementsByTagName('img')[0].getAttribute('data-gift-id');
+
+                        //setOpenDate(gift_id, {'open_date': Date.now()});
+                        setTimeout(function ()
+                        {
+                            fadeIn(document.getElementById('gift_container'));
+                            document.querySelectorAll(`div[data-gift-id="${gift_id}"]`)[0].classList.remove('hidden');
+                        }, 500);
+                    });
             }
-            )
-            .then(
-                response => {
-                    console.log(response.data);
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error);
-                });
-        }
+        );
 
-
-        // TODO: GTFO JQUERY
-        let hover_active = false;
-
-        $(window).on('load', function() {
-          let motion_parts_offset;
-          let selected_card_w;
-          let selected_card_h;
-
-          hover_active = true;
-
-          $('.list_item').hover(function() {
-            if (hover_active) {
-              $(this).addClass('hover');
-
-              selected_card_w = $(this).width();
-              selected_card_h = $(this).height();
-              motion_parts_offset = $(this).offset();
-
-              $('.motion').width(selected_card_w).height(selected_card_h).css({
-                top: motion_parts_offset.top,
-                left: motion_parts_offset.left
-              });
-            }
-          }, function() {
-            $(this).removeClass('hover');
-          });
-
-          $('.list_item').on('click', function() {
-
-            if (hover_active) {
-                hover_active = false;
-                let document_height = $(document).height();
-                var gift_id = $(this).find('img').data('gift-id');
-                selected_card_w = $(this).width();
-                selected_card_h = $(this).height();
-                motion_parts_offset = $(this).offset();
-
-                setOpenDate(gift_id, {'open_date': Date.now()});
-                $(this).removeClass('hover');
-
-                $('.motion').width(selected_card_w).height(selected_card_h).css({
-                top: motion_parts_offset.top,
-                left: motion_parts_offset.left
-                });
-
-                $('.motion').css('opacity', 1);
-                $('.motion').width('100%').height(document_height).css({
-                top: 0,
-                left: 0,
-                zIndex: 5,
-                opacity: 1,
-                visibility: 'visible'
-                });
-                console.log(gift_id);
-
-                setTimeout(function() {
-                $('.motion').css('position','fixed');
-                $('.loading-anime').show();
-                $('.gift_container').fadeIn(1000);
-                $(`.gift_content[data-gift-id='${gift_id}']`).removeClass('hidden');
-                $('.loading-anime').hide();
-                }, 500);
-                }
-          });
-
-          $('.btn_close').on('click', closePage);
-
-          function closePage(){
-            $('.gift_container').fadeOut();
-            $('.gift_content').not('.hidden').addClass('hidden');
-            $('.motion').css('position','absolute');
-            setTimeout(function() {
-              hover_active = true;
-              $('.gift_container').css({
-                background: 'none'
-              });
-            }, 500);
-            $('.motion').width(selected_card_w).height(selected_card_h).css({
-              top: motion_parts_offset.top,
-              left: motion_parts_offset.left,
-              zIndex: 0,
-              opacity: 0
-            }).css('visibility', 'hidden');
-            $('.gift_container').css('display', 'none');
-          }
-        });
+        document.getElementById('btn_close').addEventListener(
+            'click',
+            () =>
+            {
+                let gift_container = document.getElementById('gift_container');
+                fadeOut(gift_container);
+                document.querySelectorAll('.gift_content:not(.hidden)')[0].classList.add('hidden');
+            });
     }
-  render() {
-      return (
-          <div className="Home">
-              <div className="wrapper">
-                  <ul className="list">
-                      { this.createGiftsList(this.state.gifts) }
-                  </ul>
-                  <div className="gift_container">
-                      <div className="gift">
-                          <header className="gift_header">
-                              <div className="btn_close"></div>
-                          </header>
-                          {this.createGiftsDetailed(this.state.gifts)}
-                      </div>
-                  </div>
-                  <div className="motion"></div>
-              </div>
-              <div className="loading_anime"></div>
-          </div>
-      );
-  }
+
+    render() {
+        return (
+            <div className="Home">
+                <div className="wrapper">
+                    <ul className="list">
+                        { this.createGiftsList(this.state.gifts) }
+                    </ul>
+                    <div id="gift_container" className="hide">
+                        <div className="gift">
+                            <header className="gift_header">
+                                <div id="btn_close"></div>
+                            </header>
+                            {this.createGiftsDetailed(this.state.gifts)}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 }

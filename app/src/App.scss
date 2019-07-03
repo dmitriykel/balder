@@ -3,5 +3,17 @@ html,body{
 }
 
 .App {
-  font-family: 'Neucha', cursive;
+  font-family: 'Lato', sans-serif;
+}
+
+.show {
+  display: block;
+  opacity: 1;
+  transition: opacity 1000ms;
+}
+
+.hide {
+  display: none;
+  opacity: 0;
+  transition: opacity 1000ms;
 }

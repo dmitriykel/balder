@@ -12,7 +12,7 @@ class AuthorizationCodes(db.Model):
     expiration_date = db.Column(db.DateTime)
 
     def set_secret(self, secret):
-        self.secret_hash = generate_password_hash(secret)
+        self.secret_hash = generate_password_hash(secret.lower())
 
     def set_token(self, secret):
         self.token = generate_password_hash(secret + datetime.now().strftime('%m-%d-%Y,%H:%M:%S'))
