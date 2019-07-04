@@ -41,7 +41,7 @@ export default class Home extends Component {
                 });
         }
 
-        setOpenDate(gift_id, {'open_date': Date.now()});
+        setOpenDate(gift_id, {'open_date': Math.floor(Date.now() / 1000)});
         setTimeout(function ()
         {
             fadeIn(document.getElementById('gift_container'));
