@@ -118,8 +118,8 @@ export default class Home extends Component {
                 Object.keys(giftsData).map(
                 index =>
                     <div data-gift-id={giftsData[index]['id']} className="gift_content hidden">
-                        <img src={giftsData[index]['img_url']}/>
-                        <p>{giftsData[index]['data']}</p>
+                        <img src={giftsData[index]['img_url']} alt={giftsData[index]['type']}/>
+                        <div className="gift_data" dangerouslySetInnerHTML={{ __html: giftsData[index]['data'] }}></div>
                     </div>
                 )
             );

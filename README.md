@@ -13,16 +13,20 @@ In root directory
 
 To generate new secret-code (with running app)
 
-`docker-compose run api flask make-secret`
+`docker exec -it [container_name] flask make-secret [secret_word]`
+
+To get in shell to work with database
+
+`docker exec -it [container_name] flask shell`
 
 ## REST API
 | HTTP Method   | URI                                                            | Description        |
 | ------------- |:--------------------------------------------------------------:| ------------------:|
-| GET           | http://[hostname]/balder/api/v1.0/gifts                        | Get gifts list     |
-| GET           | http://[hostname]/balder/api/v1.0/gift/[gift_id]               | Get gift by id     |
-| POST          | http://[hostname]/balder/api/v1.0/gift/add                     | Add new gift       |
-| PUT           | http://[hostname]/balder/api/v1.0/gift/[gift_id]/open          | Set gift open_date |
-| POST          | http://[hostname]/balder/api/v1.0/check_secret                 | Check secret word  |
+| GET           | http://[hostname]/api/v1.0/gifts                        | Get gifts list     |
+| GET           | http://[hostname]/api/v1.0/gift/[gift_id]               | Get gift by id     |
+| POST          | http://[hostname]/api/v1.0/gift/add                     | Add new gift       |
+| PUT           | http://[hostname]/api/v1.0/gift/[gift_id]/open          | Set gift open_date |
+| POST          | http://[hostname]/api/v1.0/check_secret                 | Check secret word  |
 
 ## License
 MIT
