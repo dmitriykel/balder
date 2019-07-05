@@ -46,6 +46,7 @@ export default class Home extends Component {
         {
             fadeIn(document.getElementById('gift_container'));
             document.querySelectorAll(`div[data-gift-id="${gift_id}"]`)[0].classList.remove('hidden');
+            document.querySelectorAll(`img[data-gift-id="${gift_id}"]`)[0].src = "../images/open_gift.svg";
         }, 500);
     }
 
@@ -98,6 +99,7 @@ export default class Home extends Component {
                         <div className="container">
                             <div className="img">
                                 <img
+                                    data-gift-id={giftsData[index]['id']}
                                     src={giftsData[index]['open_date'] ? "../images/open_gift.svg" : "../images/gift.svg"}
                                     alt="gift"
                                 />
