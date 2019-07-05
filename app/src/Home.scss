@@ -19,7 +19,7 @@
 
   .list_item{
     width:320px;
-    margin:0 auto 8px;
+    margin:0.5em auto 8px 0;
     padding:0 4px;
     box-sizing:border-box;
     position:relative;
@@ -96,7 +96,8 @@
       margin-top: 5em;
 
       img{
-        width: 40%;
+        width: 60%;
+        margin-bottom: 1em;
       }
     }
 
@@ -141,7 +142,6 @@
   @media (min-width:540px){
     .list{
       max-width:540px;
-      padding:0 16px;
     }
     .list_item{
       width:50%;
